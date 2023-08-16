@@ -1,22 +1,58 @@
-import 'package:asyncstate/asyncstate.dart';
 import 'package:flutter/material.dart';
 
-class SplashPage extends StatelessWidget {
+class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  var _scale = 10;
+  var _animationOpacityLogo = .0;
+
+  double get _getLogoAnimationWidth => _scale * 100;
+  double get _getLogoAnimationHeight => _scale * 120;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      setState(() {
+        _animationOpacityLogo = 1.0;
+        _scale = 1;
+      });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Splash'),
-        elevation: 6,
-      ),
-      body: Container(
-        child: ElevatedButton(
-          onPressed: () async {
-            await Future.delayed(const Duration(seconds: 2)).asyncLoader();
-          },
-          child: const Text('Loader'),
+      backgroundColor: Colors.black,
+      body: DecoratedBox(
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/background_image_chair.jpg'),
+            fit: BoxFit.cover,
+            opacity: .2,
+          ),
+        ),
+        child: Center(
+          child: AnimatedOpacity(
+            duration: const Duration(seconds: 3),
+            curve: Curves.easeIn,
+            opacity: _animationOpacityLogo,
+            child: AnimatedContainer(
+              width: _getLogoAnimationWidth,
+              height: _getLogoAnimationHeight,
+              duration: const Duration(seconds: 3),
+              curve: Curves.linearToEaseOut,
+              child: Image.asset(
+                'assets/images/imgLogo.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
         ),
       ),
     );
