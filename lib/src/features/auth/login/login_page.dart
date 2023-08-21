@@ -38,6 +38,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
           Messages.showError(errorMessage, context);
         case LoginState(status: LoginStateStatus.error):
           Messages.showError('Erro durante a autenticação', context);
+        case LoginState(status: LoginStateStatus.admLogin):
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            '/home/adm',
+            (route) => false,
+          );
+        case LoginState(status: LoginStateStatus.employeeLogin):
+          Navigator.of(context).pushNamedAndRemoveUntil(
+            '/home/employee',
+            (route) => false,
+          );
       }
     });
 
